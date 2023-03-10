@@ -40,39 +40,35 @@ const SuperEditableSpan: React.FC<SuperEditableSpanType> = (
     const {children, onDoubleClick, className, defaultText, ...restSpanProps} =
     spanProps || {}
 
+    // выключить editMode при нажатии Enter // делают студенты
     const onEnterCallback = () => {
-        // выключить editMode при нажатии Enter // делают студенты
-
         onEnter?.()
+        setEditMode(false)
     }
+    // выключить editMode при нажатии за пределами инпута // делают студенты
     const onBlurCallback = (e: React.FocusEvent<HTMLInputElement>) => {
-        // выключить editMode при нажатии за пределами инпута // делают студенты
-
         onBlur?.(e)
+        setEditMode(false)
     }
-    const onDoubleClickCallBack = (
-        e: React.MouseEvent<HTMLSpanElement, MouseEvent>
-    ) => {
-        // включить editMode при двойном клике // делают студенты
-
+    // включить editMode при двойном клике // делают студенты
+    const onDoubleClickCallBack = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         onDoubleClick?.(e)
+        setEditMode(true)
     }
 
-    const spanClassName = s.span
-        + (className ? ' ' + className : '')
+    const spanClassName = s.span + (className ? ' ' + className : '')
 
     return (
         <>
-            {editMode ? (
-                <SuperInputText
+            {editMode
+                ? (<SuperInputText
                     autoFocus={autoFocus || true}
                     onBlur={onBlurCallback}
                     onEnter={onEnterCallback}
                     className={s.input}
                     {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
-                />
-            ) : (
-                <div className={s.spanBlock}>
+                />)
+                : (<div className={s.spanBlock}>
                     <img
                         src={editIcon}
                         className={s.pen}
@@ -87,8 +83,8 @@ const SuperEditableSpan: React.FC<SuperEditableSpanType> = (
 
                         {children || restProps.value || defaultText}
                     </span>
-                </div>
-            )}
+                </div>)
+            }
         </>
     )
 }
