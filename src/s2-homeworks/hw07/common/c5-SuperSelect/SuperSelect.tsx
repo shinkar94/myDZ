@@ -23,14 +23,14 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
     ...restProps
 }) => {
 
-    options && options.sort((a, b) => a.value !== b.value ? -1 : 1);
+
     const mappedOptions: any[] = options
         ? options.map((o) => (
               <option
                   id={'hw7-option-' + o.id}
                   className={s.option}
                   key={o.id}
-                  value={o.value}
+
 
               >
                   {o.value}
