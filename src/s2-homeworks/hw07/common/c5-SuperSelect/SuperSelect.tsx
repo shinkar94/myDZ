@@ -1,7 +1,7 @@
 import React, {
     SelectHTMLAttributes,
     DetailedHTMLProps,
-    ChangeEvent,
+    ChangeEvent, useState,
 } from 'react'
 import s from './SuperSelect.module.css'
 
@@ -30,20 +30,22 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
                   id={'hw7-option-' + o.id}
                   className={s.option}
                   key={o.id}
-                  value={o.value}
-
+                  value={o.id}
               >
                   {o.value}
               </option>
           ))
         : [] // map options with key
+    // const [selectedFruit, setSelectedFruit] = useState('111');
+    // console.log(selectedFruit)
 
     const onChangeCallback = (e: ChangeEvent<HTMLSelectElement>) => {
         console.log(e.currentTarget.value)
-        onChangeOption && onChangeOption(
-            options && options.filter(el => el.value === e.currentTarget.value)[0].id
-        )
-        // onChangeOption && onChangeOption(e.currentTarget.value)
+        // onChangeOption && onChangeOption(
+        //     options && options.filter(el => el.value === e.currentTarget.value)[0].id
+        // )
+        // setSelectedFruit(e.currentTarget.value)
+        onChangeOption && onChangeOption(e.currentTarget.value)
     }
 
     const finalSelectClassName = s.select + (className ? ' ' + className : '')
