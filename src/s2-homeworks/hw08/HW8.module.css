@@ -8,16 +8,28 @@
 }
 
 .buttonsContainer {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 20px;
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    width: 606px;
 }
 
 .thead {
-}
-
-.nameCol {
+    background: #E5E5E5;
 }
 
 .ageCol {
+    width: 303px;
+    font-weight: bold;
+    font-family: Roboto;
 }
+.nameCol{
+    border-bottom: 1px solid #E5E5E5;
+}
+
