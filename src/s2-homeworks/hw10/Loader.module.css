@@ -1,3 +1,59 @@
 .loader {
     /*свг и/или анимация*/
 }
+.container_Preloader{
+    display: inline;
+}
+.container_Preloader .preloader{
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border: 4px outset #5796e7;
+    overflow: hidden;
+    border-radius: 50%;
+    z-index: 5;
+}
+.container_Preloader .preloader::before{
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    right: 25px;
+    bottom: 25px;
+    z-index: 2;
+    background-color: #5796e7;
+    border-radius: 50%;
+    border: 2px outset #5796e7;
+}
+
+.container_Preloader .preloader .text{
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: rgb(255, 255, 255);
+    margin: 0%;
+    font-size: 16px;
+    font-weight: bold;
+}
+.container_Preloader .preloader .text .imgLoad{
+    width: 100%;
+    height: 100%;
+}
+
+.container_Preloader .preloader span{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(rgb(92, 152, 163),rgb(148, 59, 250), rgb(255,92,92));
+    filter: blur(20px);
+    z-index: 1;
+    animation: rotateSpan 0.5s linear 0s infinite;
+}
+
+@keyframes rotateSpan {
+    0%{transform: rotate(0deg);}
+    100%{transform: rotate(360deg);}
+}
