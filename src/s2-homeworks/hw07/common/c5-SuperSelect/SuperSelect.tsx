@@ -4,6 +4,7 @@ import React, {
     ChangeEvent, useState,
 } from 'react'
 import s from './SuperSelect.module.css'
+import {ThemesType} from "../../../hw12/HW12";
 
 type DefaultSelectPropsType = DetailedHTMLProps<
     SelectHTMLAttributes<HTMLSelectElement>,
@@ -11,8 +12,8 @@ type DefaultSelectPropsType = DetailedHTMLProps<
 >
 
 type SuperSelectPropsType = DefaultSelectPropsType & {
-    options?: any[]
-    onChangeOption?: (option: any) => void
+    options: ThemesType[]
+    onChangeOption?: (option: number) => void
 }
 
 const SuperSelect: React.FC<SuperSelectPropsType> = ({
@@ -45,7 +46,7 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
         //     options && options.filter(el => el.value === e.currentTarget.value)[0].id
         // )
         // setSelectedFruit(e.currentTarget.value)
-        onChangeOption && onChangeOption(e.currentTarget.value)
+        onChangeOption && onChangeOption(+e.currentTarget.value)
     }
 
     const finalSelectClassName = s.select + (className ? ' ' + className : '')
