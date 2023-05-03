@@ -14,17 +14,33 @@ import errorUnknown from './images/error.svg'
 * 3 - сделать стили в соответствии с дизайном
 * */
 
+type ResponseType = {
+    data: DataType
+    status: number
+}
+
+type DataType = {
+    errorText: string
+    info: string
+}
+
+type ErrorType = {
+    response: ResponseType
+}
+
 const HW13 = () => {
     const [code, setCode] = useState('')
     const [text, setText] = useState('')
     const [info, setInfo] = useState('')
     const [image, setImage] = useState('')
+    const [disabled, setDisabled] = useState(false)
 
     const send = (x?: boolean | null) => () => {
+        setDisabled(true)
         const url =
             x === null
                 ? 'https://xxxxxx.ccc' // имитация запроса на не корректный адрес
-                : 'https://incubator-personal-page-back.herokuapp.com/api/3.0/homework/test'
+                : 'https://samurai.it-incubator.io/api/3.0/homework/test'
 
         setCode('')
         setImage('')
@@ -33,28 +49,58 @@ const HW13 = () => {
 
         axios
             .post(url, {success: x})
-            .then((res) => {
-                setCode('Код 200!')
+            .then((res: ResponseType) => {
+                setCode(`Код ${res.status}!`)
                 setImage(success200)
-                // дописать
-
+                setText(res.data.errorText)
+                setInfo(res.data.info)
+                setDisabled(false)
             })
-            .catch((e) => {
-                // дописать
+            .catch((e:ErrorType) => {
+                let status = e.response.status
+                switch (status) {
+                    case 500:{
+                        setCode(`Код ${status}!`)
+                        setImage(error500)
+                        setText(e.response.data.errorText)
+                        setInfo(e.response.data.info)
+                        setDisabled(false)
+                        break
+                    }
+                    case 400:{
+                        setCode(`Код ${status}!`)
+                        setImage(error400)
+                        setText(e.response.data.errorText)
+                        setInfo(e.response.data.info)
+                        setDisabled(false)
+                        break
+                    }
 
+                    default:
+                        setCode('Error')
+                        setImage(errorUnknown)
+                        setInfo('Network Error AxiosError')
+                        setDisabled(false)
+                        break
+                }
+                // console.log(e.response.status)
+                // console.log(e.response.data.info)
+                // console.log(e.response.data.errorText)
+                // console.log(e)
             })
     }
 
     return (
         <div id={'hw13'}>
             <div className={s2.hwTitle}>Homework #13</div>
-
+            <hr/>
             <div className={s2.hw}>
                 <div className={s.buttonsContainer}>
                     <SuperButton
                         id={'hw13-send-true'}
                         onClick={send(true)}
                         xType={'secondary'}
+                        disabled={disabled}
                         // дописать
 
                     >
@@ -64,6 +110,7 @@ const HW13 = () => {
                         id={'hw13-send-false'}
                         onClick={send(false)}
                         xType={'secondary'}
+                        disabled={disabled}
                         // дописать
 
                     >
@@ -73,6 +120,7 @@ const HW13 = () => {
                         id={'hw13-send-undefined'}
                         onClick={send(undefined)}
                         xType={'secondary'}
+                        disabled={disabled}
                         // дописать
 
                     >
@@ -82,6 +130,7 @@ const HW13 = () => {
                         id={'hw13-send-null'}
                         onClick={send(null)} // имитация запроса на не корректный адрес
                         xType={'secondary'}
+                        disabled={disabled}
                         // дописать
 
                     >
