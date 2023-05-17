@@ -30,7 +30,8 @@ type ParamsType = {
 const getTechs = (params: ParamsType) => {
     return axios
         .get<{ techs: TechType[], totalCount: number }>(
-            'https://incubator-personal-page-back.herokuapp.com/api/3.0/homework/test3',
+            // 'https://incubator-personal-page-back.herokuapp.com/api/3.0/homework/test3',
+            'https://samurai.it-incubator.io/api/3.0/homework/test3',
             {params}
         )
         .catch((e) => {
@@ -47,19 +48,39 @@ const HW15 = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const [techs, setTechs] = useState<TechType[]>([])
 
-    const sendQuery = (params: any) => {
+    const sendQuery = (params: ParamsType) => {
         setLoading(true)
+        // console.log(params)
         getTechs(params)
             .then((res) => {
+                // console.log(res)
                 // делает студент
-
+                let respons;
+                if(res){
+                    respons = res.data
+                    console.log(respons)
+                    setTechs(respons.techs)
+                    setTotalCount(respons.totalCount)
+                    res.status === 200 && setLoading(false)
+                }
+                // console.log(res.status)
                 // сохранить пришедшие данные
-
+                // res && setTechs(res.data)
                 //
             })
     }
 
     const onChangePagination = (newPage: number, newCount: number) => {
+        console.log(newPage, newCount)
+
+        setPage(newPage)
+        setCount(newCount)
+        // setTotalCount(newCount)
+        sendQuery({page: newPage, count: newCount, sort: sort})
+        // sendQuery({page: newPage, count: newCount, sort: sort})
+        const newSearchParams = new URLSearchParams({page: newPage.toString(), count: newCount.toString()})
+        setSearchParams(newSearchParams)
+        // sendQuery()
         // делает студент
 
         // setPage(
@@ -74,9 +95,11 @@ const HW15 = () => {
     const onChangeSort = (newSort: string) => {
         // делает студент
 
-        // setSort(
-        // setPage(1) // при сортировке сбрасывать на 1 страницу
-
+        setSort(newSort)
+        setPage(1) // при сортировке сбрасывать на 1 страницу
+        sendQuery({page: page, count: count, sort: newSort})
+        const newSearchParams = new URLSearchParams({page: page.toString(), count: count.toString()})
+        setSearchParams(newSearchParams)
         // sendQuery(
         // setSearchParams(
 
@@ -85,9 +108,12 @@ const HW15 = () => {
 
     useEffect(() => {
         const params = Object.fromEntries(searchParams)
-        sendQuery({page: params.page, count: params.count})
+        console.log(params)
         setPage(+params.page || 1)
         setCount(+params.count || 4)
+        sendQuery({page: page, count: count, sort: sort})
+        // sendQuery({page: 1, count: 12, sort: sort})
+
     }, [])
 
     const mappedTechs = techs.map(t => (
